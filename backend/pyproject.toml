@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "src"
+version = "0.1.0"
+description = ""
+authors = ["Ihor Horobets <ihor@horobets.me>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+fastapi = "^0.43.0"
+uvicorn = "^0.10.8"
+aiofiles = "^0.4.0"
+motor = "^2.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^3.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
