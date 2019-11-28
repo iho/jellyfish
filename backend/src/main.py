@@ -1,8 +1,7 @@
 import json
 
 import bson
-import motor
-import pymongo
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 from starlette.responses import HTMLResponse
@@ -22,8 +21,6 @@ def read_root():
         return f.read().decode("utf8")
 
 
-app.mount("/", StaticFiles(directory=FRONTEND_DIR), name="static")
-
 users = []
 
 
@@ -33,21 +30,21 @@ class ChatMessage(BaseModel):
 
 
 @app.post("/api/messages")
-async def new_messages(message: ChatMessage):
+async def create_message(message: ChatMessage):
     message = message.dict()
     message["_id"] = bson.ObjectId()
     await database.chat_messages.insert_one(message)
     message["_id"] = str(message["_id"])
     for user in users:
         try:
-            await user.send_text(json.dump(message))
+            await user.send_text(json.dumps(message))
         except Exception as e:
             pass
     return message
 
 
 @app.get("/api/messages")
-async def message():
+async def get_messages():
     cursor = database.chat_messages.find().sort("_id")
     messages = await cursor.to_list(length=100)
     for message in messages:
@@ -61,8 +58,9 @@ async def websocket_endpoint(websocket: WebSocket):
     users.append(websocket)
     while True:
         data = await websocket.receive_text()
-        print(data)
 
+
+app.mount("/", StaticFiles(directory=FRONTEND_DIR), name="static")
 
 @app.on_event("startup")
 async def create_db_client():
