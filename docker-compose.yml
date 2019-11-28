@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - frontend:/app/frontend/build
+
+  frontend:
+    build: ./frontend
+    volumes:
+      - frontend:/app/build 
+  mongodb:
+    image: "mongo:latest"
+
+volumes:
+  frontend: 
