@@ -12,7 +12,7 @@ from src import database
 
 app = FastAPI()
 
-FRONTEND_DIR = "../frontend/build/"
+FRONTEND_DIR = "/app/frontend/build/"
 
 
 @app.get("/", response_class=HTMLResponse)
