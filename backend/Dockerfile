@@ -12,4 +12,4 @@ RUN poetry config settings.virtualenvs.create false
 RUN poetry install --no-interaction
 COPY . .
 
-CMD ["poetry", "run", "uvicorn", "src.main:app"]
+ENTRYPOINT poetry run uvicorn src.main:app
